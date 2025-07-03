@@ -6,13 +6,17 @@ use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 
 use App\Models\UserModel; 
+use App\Models\DiskonModel;
 
 class AuthController extends BaseController
 {
+    protected $diskonModel;
+
     function __construct()
     {
         helper('form');
         $this->user= new UserModel();
+        $this->diskonModel = new DiskonModel();
     }
 
     public function login()
@@ -36,6 +40,26 @@ class AuthController extends BaseController
                         'role' => $dataUser['role'],
                         'isLoggedIn' => TRUE
                     ]);
+
+                    // Check discount for today with timezone offset
+                    $timezoneOffset = $this->request->getPost('timezone_offset');
+                    $currentDate = new \DateTime('now', new \DateTimeZone('UTC'));
+                    if ($timezoneOffset !== null) {
+                        // Adjust date by timezone offset in minutes
+                        $offsetInterval = new \DateInterval('PT' . abs($timezoneOffset) . 'M');
+                        if ($timezoneOffset > 0) {
+                            $currentDate->sub($offsetInterval);
+                        } else {
+                            $currentDate->add($offsetInterval);
+                        }
+                    }
+                    $today = $currentDate->format('Y-m-d');
+                    $diskon = $this->diskonModel->where('tanggal', $today)->first();
+                    if ($diskon) {
+                        session()->set('diskon_nominal', $diskon->nominal);
+                    } else {
+                        session()->remove('diskon_nominal');
+                    }
 
                     return redirect()->to(base_url('/'));
                 } else {

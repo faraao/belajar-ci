@@ -1,68 +1,48 @@
-# CodeIgniter 4 Application Starter
+# Project Toko
 
-## What is CodeIgniter?
+## Deskripsi
+Project Toko adalah aplikasi web sederhana untuk manajemen toko online yang mencakup fitur produk, kategori produk, diskon, keranjang belanja, dan transaksi pembelian. Aplikasi ini menggunakan framework CodeIgniter 4 dan menyediakan antarmuka admin untuk mengelola data produk, kategori, diskon, serta memantau dan mengubah status pembelian.
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+## Fitur
+- **Manajemen Produk:** Admin dapat menambah, mengedit, dan menghapus produk serta kategori produk.
+- **Manajemen Diskon:** Admin dapat membuat dan mengelola diskon dengan tanggal unik dan nominal tertentu.
+- **Keranjang Belanja:** Pengguna dapat menambahkan produk ke keranjang, mengedit jumlah, dan menghapus produk dari keranjang.
+- **Transaksi Pembelian:** Pengguna dapat melakukan checkout dan menyelesaikan pembelian dengan perhitungan diskon otomatis.
+- **Manajemen Pembelian:** Admin dapat melihat seluruh data pembelian dan mengubah status pesanan (Belum Selesai / Sudah Selesai).
+- **Dashboard Sederhana:** Menampilkan data transaksi pembelian dengan jumlah item yang dibeli, menggunakan webservice dari aplikasi Toko.
+- **Role-Based Access Control:** Fitur admin hanya dapat diakses oleh pengguna dengan role admin.
+- **UI Responsif:** Menggunakan Bootstrap untuk tampilan yang responsif dan user-friendly.
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+## Instalasi
+1. Clone repository ini ke direktori lokal Anda.
+2. Pastikan Anda memiliki PHP dan Composer terinstal di sistem Anda.
+3. Jalankan perintah berikut untuk menginstal dependensi:
+   ```
+   composer install
+   ```
+4. Konfigurasikan database pada file `app/Config/Database.php`.
+5. Jalankan migrasi dan seeder untuk membuat tabel dan data awal:
+   ```
+   php spark migrate
+   php spark db:seed DiskonSeeder
+   ```
+6. Jalankan server development:
+   ```
+   php spark serve
+   ```
+7. Akses aplikasi melalui browser di alamat `http://localhost:8080`.
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+## Struktur Proyek
+- `app/Controllers/` : Berisi controller aplikasi seperti `DiskonController`, `PembelianController`, `TransaksiController`, dll.
+- `app/Models/` : Berisi model untuk berinteraksi dengan database, seperti `DiskonModel`, `TransactionModel`, dll.
+- `app/Database/Migrations/` : Berisi file migrasi untuk membuat dan mengubah struktur tabel database.
+- `app/Database/Seeds/` : Berisi file seeder untuk mengisi data awal ke database.
+- `app/Views/` : Berisi file view untuk tampilan frontend dan backend.
+- `app/Config/Routes.php` : Konfigurasi routing aplikasi.
+- `public/` : Folder publik yang berisi file index.php dan aset frontend.
+- `public/dashboard-toko/` : Folder aplikasi Dashboard sederhana yang menampilkan data transaksi pembelian menggunakan webservice dari aplikasi Toko.
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
-
-## Installation & updates
-
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
-
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
-
-## Setup
-
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
-
-## Important Change with index.php
-
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
-
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
-
-**Please** read the user guide for a better explanation of how CI4 works!
-
-## Repository Management
-
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
-
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
-
-## Server Requirements
-
-PHP version 8.1 or higher is required, with the following extensions installed:
-
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
-
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - If you are still using PHP 7.4 or 8.0, you should upgrade immediately.
-> - The end of life date for PHP 8.1 will be December 31, 2025.
-
-Additionally, make sure that the following extensions are enabled in your PHP:
-
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+## Catatan
+- Pastikan webservice API pada aplikasi Toko berjalan dengan baik agar Dashboard dapat menampilkan data transaksi dengan benar.
+- Role admin diperlukan untuk mengakses fitur manajemen produk, diskon, dan pembelian.
+- Fitur diskon otomatis diterapkan pada saat penambahan produk ke keranjang dan saat checkout.

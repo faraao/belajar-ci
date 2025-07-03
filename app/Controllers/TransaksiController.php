@@ -34,13 +34,24 @@ class TransaksiController extends BaseController
 
     public function cart_add()
     {
+        $price = $this->request->getPost('harga');
+        $diskon_nominal = session()->get('diskon_hari_ini');
+        if ($diskon_nominal) {
+            $price = max(0, $price - $diskon_nominal);
+        }
+
         $this->cart->insert(array(
             'id'        => $this->request->getPost('id'),
             'qty'       => 1,
-            'price'     => $this->request->getPost('harga'),
+            'price'     => $price,
             'name'      => $this->request->getPost('nama'),
-            'options'   => array('foto' => $this->request->getPost('foto'))
+            'options'   => array(
+            'foto'        => $this->request->getPost('foto'),
+            'harga_asli'  => $this->request->getPost('harga'),
+            'diskon'      => $diskon_nominal ?? 0
+            )
         ));
+
         session()->setflashdata('success', 'Produk berhasil ditambahkan ke keranjang. (<a href="' . base_url() . 'keranjang">Lihat</a>)');
         return redirect()->to(base_url('/'));
     }
@@ -156,13 +167,21 @@ class TransaksiController extends BaseController
 
         $last_insert_id = $this->transaction->getInsertID();
 
+        $diskon_nominal = session()->get('diskon_hari_ini');
         foreach ($this->cart->contents() as $value) {
+            $subtotal_harga = $value['qty'] * $value['price'];
+            $diskon = 0;
+            if ($diskon_nominal) {
+                $diskon = $diskon_nominal * $value['qty'];
+                $subtotal_harga = max(0, $subtotal_harga - $diskon);
+            }
+
             $dataFormDetail = [
                 'transaction_id' => $last_insert_id,
                 'product_id' => $value['id'],
                 'jumlah' => $value['qty'],
-                'diskon' => 0,
-                'subtotal_harga' => $value['qty'] * $value['price'],
+                'diskon' => $diskon,
+                'subtotal_harga' => $subtotal_harga,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ];

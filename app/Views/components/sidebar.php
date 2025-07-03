@@ -16,22 +16,7 @@
                 <span>Keranjang</span>
             </a>
         </li><!-- End Keranjang Nav -->
-        <?php
-        if (session()->get('role') == 'admin') {
-        ?>
-            <li class="nav-item">
-                <a class="nav-link <?php echo (uri_string() == 'produk') ? "" : "collapsed" ?>" href="produk">
-                    <i class="bi bi-receipt"></i>
-                    <span>Produk</span>
-                </a>
-            </li><!-- End Produk Nav -->
-             <li class="nav-item">
-            <a class="nav-link <?php echo (uri_string() == 'productcategory') ? "" : "collapsed" ?>" href="productcategory">
-                <i class="bi bi-receipt"></i>
-                <span>Produk Kategori</span>
-            </a>
-            </li><!-- End Produk Cetegory Nav -->
-            <li class="nav-item">
+        <li class="nav-item">
                 <a class="nav-link <?php echo (uri_string() == 'profile') ? "" : "collapsed" ?>" href="profile">
                     <i class="bi bi-person"></i>
                     <span>Profile</span>
@@ -49,6 +34,33 @@
                 <span>Contact</span>
             </a>
         </li><!-- End contact Nav -->
+        <?php
+        if (session()->get('role') == 'admin') {
+        ?>
+            <li class="nav-item">
+                <a class="nav-link <?php echo (uri_string() == 'produk') ? "" : "collapsed" ?>" href="produk">
+                    <i class="bi bi-receipt"></i>
+                    <span>Produk</span>
+                </a>
+            </li><!-- End Produk Nav -->
+             <li class="nav-item">
+            <a class="nav-link <?php echo (uri_string() == 'productcategory') ? "" : "collapsed" ?>" href="productcategory">
+                <i class="bi bi-receipt"></i>
+                <span>Produk Kategori</span>
+            </a>
+            </li><!-- End Produk Cetegory Nav -->
+            <li class="nav-item">
+                <a class="nav-link <?php echo (uri_string() == 'diskon') ? "" : "collapsed" ?>" href="diskon">
+                    <i class="bi bi-receipt"></i>
+                     <span>Diskon</span>
+                </a>
+            </li><!-- End Diskon Nav -->
+            <li class="nav-item">
+                <a class="nav-link <?php echo (uri_string() == 'pembelian') ? "" : "collapsed" ?>" href="pembelian">
+                    <i class="bi bi-bag-check"></i>
+                    <span>Pembelian</span>
+                </a>
+            </li><!-- End Pembelian Nav -->
         <?php
         }
         ?>

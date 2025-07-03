@@ -56,44 +56,46 @@
             </tr>
 
             <!-- Edit Modal Begin -->
-            <div class="modal fade" id="editModal-<?= $category['id'] ?>" tabindex="-1" aria-labelledby="editModalLabel-<?= $category['id'] ?>" aria-hidden="true">
+            <div class="modal fade" id="editModal-<?= $category['id'] ?>" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="editModalLabel-<?= $category['id'] ?>">Edit Data</h5>
+                            <h5 class="modal-title">Edit Data</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <form action="<?= base_url('productcategory/edit/' . $category['id']) ?>" method="post" enctype="multipart/form-data">
                             <?= csrf_field(); ?>
                             <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="merk-<?= $category['id'] ?>" class="form-label">Merk</label>
-                                    <input type="text" class="form-control" id="merk-<?= $category['id'] ?>" name="merk" value="<?= esc($category['merk']) ?>" required>
+                                <div class="form-group">
+                                    <label>Merk</label>
+                                    <input type="text" name="merk" class="form-control" value="<?= esc($category['merk']) ?>" required>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="seri-<?= $category['id'] ?>" class="form-label">Seri</label>
-                                    <input type="text" class="form-control" id="seri-<?= $category['id'] ?>" name="seri" value="<?= esc($category['seri']) ?>" required>
+                                <div class="form-group">
+                                    <label>Seri</label>
+                                    <input type="text" name="seri" class="form-control" value="<?= esc($category['seri']) ?>" required>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="harga-<?= $category['id'] ?>" class="form-label">Harga</label>
-                                    <input type="number" step="0.01" class="form-control" id="harga-<?= $category['id'] ?>" name="harga" value="<?= esc($category['harga']) ?>" required>
+                                <div class="form-group">
+                                    <label>Harga</label>
+                                    <input type="text" name="harga" class="form-control" value="<?= esc($category['harga']) ?>" required>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="jumlah-<?= $category['id'] ?>" class="form-label">Jumlah</label>
-                                    <input type="number" class="form-control" id="jumlah-<?= $category['id'] ?>" name="jumlah" value="<?= esc($category['jumlah']) ?>" required>
+                                <div class="form-group">
+                                    <label>Jumlah</label>
+                                    <input type="text" name="jumlah" class="form-control" value="<?= esc($category['jumlah']) ?>" required>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="spesifikasi-<?= $category['id'] ?>" class="form-label">Spesifikasi</label>
-                                    <textarea class="form-control" id="spesifikasi-<?= $category['id'] ?>" name="spesifikasi" rows="4"><?= esc($category['spesifikasi']) ?></textarea>
+                                <div class="form-group">
+                                    <label>Spesifikasi</label>
+                                    <textarea name="spesifikasi" class="form-control" rows="4"><?= esc($category['spesifikasi']) ?></textarea>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="foto-<?= $category['id'] ?>" class="form-label">Foto</label>
-                                    <?php if ($category['foto'] && file_exists('img/' . $category['foto'])) : ?>
-                                        <div class="mb-2">
-                                            <img src="/img/<?= esc($category['foto']) ?>" alt="Foto" width="150">
-                                        </div>
-                                    <?php endif; ?>
-                                    <input type="file" class="form-control" id="foto-<?= $category['id'] ?>" name="foto" accept="image/*">
+                                <img src="<?= base_url('img/' . $category['foto']) ?>" width="100px">
+                                <div class="form-check my-2">
+                                    <input class="form-check-input" type="checkbox" id="check" name="check" value="1">
+                                    <label class="form-check-label" for="check">
+                                        Ceklis jika ingin mengganti foto
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Foto</label>
+                                    <input type="file" class="form-control" name="foto" accept="image/*">
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -111,39 +113,39 @@
 </table>
 
 <!-- Add Modal Begin -->
-<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+<div class="modal fade" id="addModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addModalLabel">Tambah Data</h5>
+                <h5 class="modal-title">Tambah Data</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="<?= base_url('productcategory/create') ?>" method="post" enctype="multipart/form-data">
+            <form action="<?= base_url('productcategory') ?>" method="post" enctype="multipart/form-data">
                 <?= csrf_field(); ?>
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="merk" class="form-label">Merk</label>
-                        <input type="text" class="form-control" id="merk" name="merk" required>
+                    <div class="form-group">
+                        <label>Merk</label>
+                        <input type="text" name="merk" class="form-control" placeholder="Merk" required>
                     </div>
-                    <div class="mb-3">
-                        <label for="seri" class="form-label">Seri</label>
-                        <input type="text" class="form-control" id="seri" name="seri" required>
+                    <div class="form-group">
+                        <label>Seri</label>
+                        <input type="text" name="seri" class="form-control" placeholder="Seri" required>
                     </div>
-                    <div class="mb-3">
-                        <label for="harga" class="form-label">Harga</label>
-                        <input type="number" step="0.01" class="form-control" id="harga" name="harga" required>
+                    <div class="form-group">
+                        <label>Harga</label>
+                        <input type="text" name="harga" class="form-control" placeholder="Harga" required>
                     </div>
-                    <div class="mb-3">
-                        <label for="jumlah" class="form-label">Jumlah</label>
-                        <input type="number" class="form-control" id="jumlah" name="jumlah" required>
+                    <div class="form-group">
+                        <label>Jumlah</label>
+                        <input type="text" name="jumlah" class="form-control" placeholder="Jumlah" required>
                     </div>
-                    <div class="mb-3">
-                        <label for="spesifikasi" class="form-label">Spesifikasi</label>
-                        <textarea class="form-control" id="spesifikasi" name="spesifikasi" rows="4"></textarea>
+                    <div class="form-group">
+                        <label>Spesifikasi</label>
+                        <textarea name="spesifikasi" class="form-control" rows="4" placeholder="Spesifikasi"></textarea>
                     </div>
-                    <div class="mb-3">
-                        <label for="foto" class="form-label">Foto</label>
-                        <input type="file" class="form-control" id="foto" name="foto" accept="image/*">
+                    <div class="form-group">
+                        <label>Foto</label>
+                        <input type="file" class="form-control" name="foto" accept="image/*">
                     </div>
                 </div>
                 <div class="modal-footer">
