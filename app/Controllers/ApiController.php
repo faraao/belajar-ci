@@ -7,22 +7,23 @@ use CodeIgniter\RESTful\ResourceController;
 
 use App\Models\UserModel;
 use App\Models\TransactionModel;
-use App\Model\TransactionDetailModel;
+use App\Models\TransactionDetailModel;
 
 class ApiController extends ResourceController
 {
     protected $apiKey;
     protected $user;
     protected $transaction;
-    protected $transactionDetail;
+    protected $transaction_detail;
 
     function __construct()
     {
-        $this->apiKey = env('API_KEY');
+        $this->apiKey = "superrahasia123";
         $this->user = new UserModel();
         $this->transaction = new TransactionModel();
         $this->transaction_detail = new TransactionDetailModel();
     }
+
     /**
      * Return an array of resource objects, themselves in array format.
      *
@@ -30,34 +31,35 @@ class ApiController extends ResourceController
      */
     public function index()
 {
-    $data = [ 
+    $headerKey = $this->request->getHeaderLine('X-API-KEY'); // ← ini kuncinya
+    $expectedKey = $this->apiKey;
+
+    if ($headerKey === $expectedKey) {
+        $builder = $this->transaction->builder(); 
+        $builder->select('transaction.*, SUM(transaction_detail.jumlah) as jumlah_item');
+        $builder->join('transaction_detail', 'transaction_detail.transaction_id = transaction.id', 'left');
+        $builder->groupBy('transaction.id');
+        $penjualan = $builder->get()->getResult();
+
+        $count = count($penjualan);
+
+        return $this->respond([
+            'results' => $penjualan,
+            'count' => $count,
+            'status' => ['code' => 200, 'description' => 'OK']
+        ]);
+    }
+
+    return $this->respond([
         'results' => [],
-        'status' => ["code" => 401, "description" => "Unauthorized"]
-    ];
-
-    $headers = $this->request->headers(); 
-
-    array_walk($headers, function (&$value, $key) {
-        $value = $value->getValue();
-    });
-
-    if(array_key_exists("Key", $headers)){
-        if ($headers["Key"] == $this->apiKey) {
-            $penjualan = $this->transaction->findAll();
-            
-            foreach ($penjualan as &$pj) {
-                $pj['details'] = $this->transaction_detail->where('transaction_id', $pj['id'])->findAll();
-            }
-
-            $data['status'] = ["code" => 200, "description" => "OK"];
-            $data['results'] = $penjualan;
-
-        }
-    } 
-
-    return $this->respond($data);
+        'status' => [
+            'code' => 401,
+            'description' => 'Unauthorized',
+            'debug_received' => $headerKey,
+            'debug_expected' => $expectedKey
+        ]
+    ]);
 }
-
     /**
      * Return the properties of a resource object.
      *
@@ -67,7 +69,7 @@ class ApiController extends ResourceController
      */
     public function show($id = null)
     {
-        //
+        // Tidak digunakan
     }
 
     /**
@@ -77,7 +79,7 @@ class ApiController extends ResourceController
      */
     public function new()
     {
-        //
+        // Tidak digunakan
     }
 
     /**
@@ -87,7 +89,7 @@ class ApiController extends ResourceController
      */
     public function create()
     {
-        //
+        // Tidak digunakan
     }
 
     /**
@@ -99,7 +101,7 @@ class ApiController extends ResourceController
      */
     public function edit($id = null)
     {
-        //
+        // Tidak digunakan
     }
 
     /**
@@ -111,7 +113,7 @@ class ApiController extends ResourceController
      */
     public function update($id = null)
     {
-        //
+        // Tidak digunakan
     }
 
     /**
@@ -123,6 +125,6 @@ class ApiController extends ResourceController
      */
     public function delete($id = null)
     {
-        //
+        // Tidak digunakan
     }
 }

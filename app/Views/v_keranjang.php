@@ -15,12 +15,14 @@ if (session()->getFlashData('success')) {
 <table class="table datatable">
     <thead>
         <tr>
-            <th scope="col">Nama</th>
-            <th scope="col">Foto</th>
-            <th scope="col">Harga</th>
-            <th scope="col">Jumlah</th>
-            <th scope="col">Subtotal</th>
-            <th scope="col">Aksi</th>
+            <th>Nama</th>
+            <th>Foto</th>
+            <th>Harga Asli</th>
+            <th>Diskon</th>
+            <th>Harga Setelah Diskon</th>
+            <th>Jumlah</th>
+            <th>Subtotal</th>
+            <th>Aksi</th>
         </tr>
     </thead>
     <tbody>
@@ -28,15 +30,19 @@ if (session()->getFlashData('success')) {
         $i = 1;
         if (!empty($items)) :
             foreach ($items as $index => $item) :
+                $hargaAsli = $item['options']['harga_asli'] ?? $item['price'];
+                $diskon = $item['options']['diskon'] ?? 0;
         ?>
                 <tr>
-                    <td><?php echo $item['name'] ?></td>
-                    <td><img src="<?php echo base_url() . "img/" . $item['options']['foto'] ?>" width="100px"></td>
-                    <td><?php echo number_to_currency($item['price'], 'IDR') ?></td>
-                    <td><input type="number" min="1" name="qty<?php echo $i++ ?>" class="form-control" value="<?php echo $item['qty'] ?>"></td>
-                    <td><?php echo number_to_currency($item['subtotal'], 'IDR') ?></td>
+                    <td><?= $item['name'] ?></td>
+                    <td><img src="<?= base_url() . "img/" . $item['options']['foto'] ?>" width="100px"></td>
+                    <td><?= number_to_currency($hargaAsli, 'IDR') ?></td>
+                    <td><?= $diskon > 0 ? number_to_currency($diskon, 'IDR') : '-' ?></td>
+                    <td><?= number_to_currency($item['price'], 'IDR') ?></td>
+                    <td><input type="number" min="1" name="qty<?= $i++ ?>" class="form-control" value="<?= $item['qty'] ?>"></td>
+                    <td><?= number_to_currency($item['subtotal'], 'IDR') ?></td>
                     <td>
-                        <a href="<?php echo base_url('keranjang/delete/' . $item['rowid'] . '') ?>" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                        <a href="<?= base_url('keranjang/delete/' . $item['rowid']) ?>" class="btn btn-danger"><i class="bi bi-trash"></i></a>
                     </td>
                 </tr>
         <?php

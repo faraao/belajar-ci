@@ -1,0 +1,30 @@
+<th style="width: 25%;">Tanggal Transaksi</th>
+            </tr>
+=======
+            <th style="width: 10%;">Status</th>
+            <th style="width: 10%;">Jumlah Item</th>
+            <th style="width: 25%;">Tanggal Transaksi</th>
+            </tr>
+>>>>>>> REPLACE
+```
+
+```
+<<<<<<< SEARCH
+                                <td>
+                                    <?= $item1->status; ?>
+                                </td>
+                                <td>
+                                    <?= $item1->created_at; ?>
+                                </td>
+                            </tr> 
+=======
+                                <td>
+                                    <?= $item1->status; ?>
+                                </td>
+                                <td>
+                                    <?= isset($item1->jumlah_item) ? $item1->jumlah_item : 0; ?>
+                                </td>
+                                <td>
+                                    <?= $item1->created_at; ?>
+                                </td>
+                            </tr>

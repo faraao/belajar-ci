@@ -50,7 +50,18 @@ abstract class BaseController extends Controller
     {
         // Do Not Edit This Line
         parent::initController($request, $response, $logger);
+        $diskonModel = new \App\Models\DiskonModel();
+        $hariIni = date('Y-m-d');
+        $diskon = $diskonModel->where('tanggal', $hariIni)->first();
 
+        if ($diskon) {
+            $nominal = $diskon->nominal;
+            service('renderer')->setVar('todayDiskon', $nominal);         // untuk header
+            session()->set('diskon_hari_ini', $nominal);                  // untuk cart & transaksi
+        } else {
+            service('renderer')->setVar('todayDiskon', null);
+            session()->remove('diskon_hari_ini');                         // kalau tidak ada, hapus saja
+        }
         // Preload any models, libraries, etc, here.
 
         // E.g.: $this->session = service('session');

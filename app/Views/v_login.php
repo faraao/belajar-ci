@@ -47,7 +47,7 @@ $password = [
                     }
                     ?>
 
-<?= form_open('login', 'class = "row g-3 needs-validation"') ?>
+<?= form_open('login', 'class = "row g-3 needs-validation" id="loginForm"') ?>
 
 <div class="col-12">
     <label for="yourUsername" class="form-label">Username</label>
@@ -85,4 +85,24 @@ $password = [
         </div>
 
       </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        // Get the user's timezone offset in minutes
+        const timezoneOffset = new Date().getTimezoneOffset();
+
+        // Create a hidden input to store timezone offset
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'timezone_offset';
+        input.value = timezoneOffset;
+
+        // Append hidden input to the form
+        loginForm.appendChild(input);
+    }
+});
+</script>
+
 <?= $this->endSection() ?>

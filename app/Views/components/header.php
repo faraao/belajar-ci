@@ -9,15 +9,36 @@
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
-    <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-      </form>
+    <div class="d-flex justify-content-end align-items-center gap-2">
+      <!-- Search box -->
+      <div class="input-group" style="max-width: 250px;">
+        <input type="text" class="form-control" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-secondary" type="button">
+          <i class="bi bi-search"></i>
+        </button>
+      </div>
+
+      <!-- Diskon info -->
+      <?php
+        if (isset($todayDiskon) && is_numeric($todayDiskon)) {
+      ?>
+        <span class="badge bg-success">
+          Hari ini ada diskon <?= number_format($todayDiskon, 0, ',', '.') ?> per item
+        </span>
+      <?php } else { ?>
+        <span class="badge bg-secondary">
+          Tidak ada diskon hari ini
+        </span>
+      <?php } ?>
     </div><!-- End Search Bar -->
 
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
+
+
+        <?php if(session('role') === 'admin'): ?>
+        <!-- Removed Manajemen Diskon button from header as per request -->
+        <?php endif; ?>
 
         <li class="nav-item d-block d-lg-none">
           <a class="nav-link nav-icon search-bar-toggle " href="#">

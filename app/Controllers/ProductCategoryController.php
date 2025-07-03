@@ -33,32 +33,29 @@ class ProductCategoryController extends BaseController
                 'created_at' => date("Y-m-d H:i:s")
             ];
 
-            if ($dataFoto && $dataFoto->isValid()) {
+            if ($dataFoto && $dataFoto->isValid() && !$dataFoto->hasMoved()) {
                 $fileName = $dataFoto->getRandomName();
-                $dataForm['foto'] = $fileName;
                 $dataFoto->move('img/', $fileName);
+                $dataForm['foto'] = $fileName;
             }
 
-            $this->productCategory->insert($dataForm);
-
-            return redirect()->to('/productcategory')->with('success', 'Product Category added successfully');
+            $this->productCategory->save($dataForm);
+            return redirect()->to('/productcategory')->with('success', 'Data berhasil ditambahkan.');
         }
 
-        return view('v_productcategory_create');
+        return redirect()->to('/productcategory');
     }
 
     public function edit($id)
     {
-        $category = $this->productCategory->find($id);
-
-        if (!$category) {
-            return redirect()->to('/productcategory')->with('error', 'Product Category not found');
-        }
-
         if ($this->request->getMethod() === 'post') {
-            $dataFoto = $this->request->getFile('foto');
+            $category = $this->productCategory->find($id);
+            if (!$category) {
+                return redirect()->to('/productcategory')->with('error', 'Data tidak ditemukan.');
+            }
 
             $dataForm = [
+                'id' => $id,
                 'merk' => $this->request->getPost('merk'),
                 'seri' => $this->request->getPost('seri'),
                 'harga' => $this->request->getPost('harga'),
@@ -67,22 +64,23 @@ class ProductCategoryController extends BaseController
                 'updated_at' => date("Y-m-d H:i:s")
             ];
 
-            if ($dataFoto && $dataFoto->isValid()) {
-                if ($category['foto'] && file_exists('img/' . $category['foto'])) {
-                    unlink('img/' . $category['foto']);
+            if ($this->request->getPost('check')) {
+                $dataFoto = $this->request->getFile('foto');
+                if ($dataFoto && $dataFoto->isValid() && !$dataFoto->hasMoved()) {
+                    if ($category['foto'] && file_exists('img/' . $category['foto'])) {
+                        unlink('img/' . $category['foto']);
+                    }
+                    $fileName = $dataFoto->getRandomName();
+                    $dataFoto->move('img/', $fileName);
+                    $dataForm['foto'] = $fileName;
                 }
-                $fileName = $dataFoto->getRandomName();
-                $dataFoto->move('img/', $fileName);
-                $dataForm['foto'] = $fileName;
             }
 
-            $this->productCategory->update($id, $dataForm);
-
-            return redirect()->to('/productcategory')->with('success', 'Product Category updated successfully');
+            $this->productCategory->save($dataForm);
+            return redirect()->to('/productcategory')->with('success', 'Data berhasil diubah.');
         }
 
-        $data['category'] = $category;
-        return view('v_productcategory_edit', $data);
+        return redirect()->to('/productcategory');
     }
 
     public function delete($id)
@@ -94,9 +92,9 @@ class ProductCategoryController extends BaseController
                 unlink('img/' . $category['foto']);
             }
             $this->productCategory->delete($id);
-            return redirect()->to('/productcategory')->with('success', 'Product Category deleted successfully');
+            return redirect()->to('/productcategory')->with('success', 'Data berhasil dihapus.');
         }
 
-        return redirect()->to('/productcategory')->with('error', 'Product Category not found');
+        return redirect()->to('/productcategory')->with('error', 'Data tidak ditemukan.');
     }
 }
